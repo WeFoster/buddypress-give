@@ -1,6 +1,6 @@
 #BuddyPress EDD Supporters
 
-BuddyPress EDD Supporters is a plugin created for CFCommunity.net: A Social Network for people affected by Cystic Fibrosis. With BP-EDD-Supporters we want to make it as easy as possible to accept donations for your cause through easy digital downloads. 
+BuddyPress EDD Supporters is a plugin created for CFCommunity.net: A Social Network for people affected by Cystic Fibrosis (read more here: http://igg.me/at/cfcommunity/x). With BP-EDD-Supporters we want to make it as easy as possible to accept donations for your cause through easy digital downloads. 
 
 ## Requirements
 
