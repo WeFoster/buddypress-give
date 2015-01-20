@@ -6,7 +6,7 @@ BuddyPress EDD Supporters is a plugin created for CFCommunity.net: A Social Netw
 
 - BuddyPress
 - Easy Digital Downloads
-- Paymal Payments Standard (included with EDD)
+- Paypal Payments Standard (included with EDD)
 
 ### Recommended EDD Extensions
 - Recurring Payments
@@ -33,7 +33,6 @@ One possible way of setting up  donations would be:
 ## Caveats / Notes
 
 - Allow the user to donate anonymously 
-- Use a subdomain in a Multisite network for the donations (https://support.cfcommunity.net)
 
 ## Optional
 
