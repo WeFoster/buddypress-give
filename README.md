@@ -26,9 +26,7 @@ One possible way of setting up  donations would be:
 - A Product is created called "Support"
 - User chooses the product variation with the right (recurring) donation amount
 - User checks out with PayPal or Stripe
-- Once the subscription is added a BuddyPress user_meta key is added.
-- Use this to query for a custom member loop and display all the user that are supporting the site.
-- Once a user updates or cancels it’s donation, the is_support meta key get’s changed to “no”
+- Query for a custom member loop and display all the users that are supporting the site.
 
 ## Caveats / Notes
 
