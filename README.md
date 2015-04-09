@@ -1,6 +1,6 @@
 #BuddyPress Give
 
-BuddyPress EDD Supporters is an extension created for CFCommunity.net: A Social Network for people affected by Cystic Fibrosis (read more here: http://igg.me/at/cfcommunity/x). With BuddyPress Give we want to make it as easy as possible to accept and integrate donations for your BuddyPress community through the GiveWP.com plugin 
+BuddyPress Give is an extension created for CFCommunity.net: A Social Network for people affected by Cystic Fibrosis (read more here: http://igg.me/at/cfcommunity/x). With BuddyPress Give we want to make it as easy as possible to accept and integrate donations for your BuddyPress community through the GiveWP.com plugin 
 
 ## Requirements
 
