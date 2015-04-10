@@ -1,5 +1,7 @@
 #BuddyPress Give
 
+![give-bp](https://cloud.githubusercontent.com/assets/855037/7086203/60fb9fc4-df7e-11e4-8255-c6803e46965f.jpg)
+
 BuddyPress Give is an extension created for CFCommunity.net: A Social Network for people affected by Cystic Fibrosis (read more here: http://igg.me/at/cfcommunity/x). With BuddyPress Give we want to make it as easy as possible to accept and integrate donations for your BuddyPress community through the GiveWP.com plugin 
 
 ## Requirements
