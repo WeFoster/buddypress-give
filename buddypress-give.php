@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) )
 function bpg_init() {
 
 	// Bail if Give or BuddyPress aren't active.
-	if ( ! bpg_plugins_exist() ) {
+	if ( ! bpg_req_plugins_exist() ) {
 		return;
 	}
 
@@ -50,6 +50,11 @@ function bpg_init() {
 	 * Require the plugin's admin.
 	 */
 	require dirname( __FILE__ ) . '/inc/admin.php';
+
+	/**
+	 * Require the plugin's widgets.
+	 */
+	require dirname( __FILE__ ) . '/inc/widgets.php';
 }
 add_action( 'bp_include', 'bpg_init' );
 
@@ -65,13 +70,61 @@ function bpg_i18n() {
 add_action( 'plugins_loaded', 'bpg_i18n' );
 
 /**
- * Check if dependent plugins are active.
+ * Enqueue the JS.
+ *
+ * @since 1.0.0
+ */
+function bpg_enqueue_js() {
+
+	// Bail if Give or BuddyPress aren't active.
+	if ( ! bpg_req_plugins_exist() ) {
+		return;
+	}
+
+	// Bail if the required components aren't active.
+	if ( ! bp_is_active( 'activity' ) ) {
+		return;
+	}
+
+	// Bail if the user isn't logged in.
+	if ( ! is_user_logged_in() )
+		return;
+
+	wp_enqueue_script( 'bpg-script', plugins_url( 'js/script.js', __FILE__ ), array( 'jquery' ), NULL, true );
+}
+// add_action( 'wp_enqueue_scripts', 'bpg_enqueue_js' );
+
+/**
+ * Enqueue the CSS.
+ *
+ * @since 1.0.0
+ */
+function bpg_enqueue_css() {
+
+	// Bail if Give or BuddyPress aren't active.
+	if ( ! bpg_req_plugins_exist() ) {
+		return;
+	}
+
+	// Bail if the required components aren't active.
+	if ( ! bp_is_active( 'activity' ) ) {
+		return;
+	}
+
+	wp_register_style( 'buddypress-give', plugins_url( 'css/style.css', __FILE__ ) );
+
+	wp_enqueue_style( 'buddypress-give' );
+}
+add_action( 'wp_enqueue_scripts', 'bpg_enqueue_css' );
+
+/**
+ * Check if required plugins are active.
  *
  * @since 1.0.0
  *
  * @return bool True if both Give and BuddyPress are active, false if not.
  */
-function bpg_plugins_exist() {
+function bpg_req_plugins_exist() {
 
 	if ( class_exists( 'BuddyPress' ) && class_exists( 'Give' ) ) {
 		return true;
@@ -79,7 +132,7 @@ function bpg_plugins_exist() {
 		return false;
 	}
 }
-add_action( 'plugins_loaded', 'bpg_plugins_exist' );
+add_action( 'plugins_loaded', 'bpg_req_plugins_exist' );
 
 /**
  * Output an admin notice if BuddyPress isn't active.
@@ -88,7 +141,7 @@ add_action( 'plugins_loaded', 'bpg_plugins_exist' );
  */
 function bpg_admin_notice() {
 
-	if ( ! bpg_plugins_exist() ) {
+	if ( ! bpg_req_plugins_exist() ) {
 		?>
 		<div class="error">
 			<p><?php _e( 'BuddyPress Give requires both Give and BuddyPress to be active.', 'buddypress-give' ); ?></p>
