@@ -73,29 +73,36 @@ class Donation_Leaderboard_Widget extends WP_Widget {
 		$donors = $customers->get_customers( $query_args );
 
 		if ( $donors ) { ?>
-			<ul>
+			<ul class="bp-give-leaderboard item-list">
 			<?php foreach ( $donors as $donor ) { ?>
 
 				<?php $user = get_userdata( $donor->user_id ); ?>
-				<li>
-				<?php
-				$avatar_args = array(
-					'item_id' => $user->ID,
-					'width' => 26,
-					'height' => 26,
-					'alt' => $user->display_name
-				);
-				echo bp_core_fetch_avatar( $avatar_args );
-				?>
-				<a href="<?php echo bp_core_get_user_domain( $user->ID ); ?>" title="<?php echo $user->display_name; ?>"><?php echo $user->display_name; ?></a>
-				<?php if ( $instance['show_total'] ) {
-					echo '<span class="purchase-value">' . $donor->purchase_value . ' ' . give_get_currency() . '</span>';
-				} ?>
+				<li class"vcard bp-give-leaderboard-item">
+					<div class="item-avatar">
+						<?php
+						$avatar_args = array(
+							'item_id' => $user->ID,
+							'width' => 26,
+							'height' => 26,
+							'alt' => $user->display_name
+						);
+						echo bp_core_fetch_avatar( $avatar_args );
+						?>
+					</div>
+					<div class="item-title">
+						<a href="<?php echo bp_core_get_user_domain( $user->ID ); ?>" title="<?php echo $user->display_name; ?>"><?php echo $user->display_name; ?>
+						</a>
+					</div>
+					<div class="item-meta">
+						<?php if ( $instance['show_total'] ) {
+						echo '<span class="bp-give-purchase-value">' . $donor->purchase_value . ' ' . give_get_currency() . '</span>';
+						} ?>
+					</div>
 				</li>
 			<?php } ?>
 			</ul>
 		<?php } else { ?>
-			<p><?php _e( 'No donations have been made.', 'buddypress-give' ); ?></p>
+			<p class="bp-give-notice"><?php _e( 'No donations have been made.', 'buddypress-give' ); ?></p>
 		<?php }
 
 		echo $args['after_widget'];
