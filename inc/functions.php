@@ -105,7 +105,7 @@ function bpg_add_activity_item( $payment_id ) {
 	$user = get_userdata( $payment_meta['user_info']['id'] );
 
 	if ( $option_data['bpg-show-amount'] ) {
-		$action = sprintf( __( '%s just donated %1.2f %s to %s', 'buddypress-give' ), $user->display_name, (float) $payment_total, give_get_currency(), get_the_title( $payment_meta['form_id'] ) );
+		$action = sprintf( __( '%s just donated %s%1.2f to %s', 'buddypress-give' ), $user->display_name, give_currency_symbol(), (float) $payment_total, get_the_title( $payment_meta['form_id'] ) );
 	} else {
 		$action = sprintf( __( '%s just donated to %s', 'buddypress-give' ), $user->display_name, get_the_title( $payment_meta['form_id'] ) );
 	}

@@ -89,7 +89,7 @@ class Donation_Leaderboard_Widget extends WP_Widget {
 				?>
 				<a href="<?php echo bp_core_get_user_domain( $user->ID ); ?>" title="<?php echo $user->display_name; ?>"><?php echo $user->display_name; ?></a>
 				<?php if ( $instance['show_total'] ) {
-					echo '<span class="purchase-value">' . $donor->purchase_value . ' ' . give_get_currency() . '</span>';
+					echo '<span class="purchase-value">' . give_currency_symbol() . $donor->purchase_value . '</span>';
 				} ?>
 				</li>
 			<?php } ?>
