@@ -111,7 +111,7 @@ function bpg_purchase_summary( $payment ) {
 add_action( 'give_payment_receipt_after', 'bpg_purchase_summary' );
 
 /**
- * Add an activity item.
+ * Add an item to the activity stream.
  * 
  * @since 1.0.0
  *
@@ -131,35 +131,28 @@ function bpg_add_activity_item( $payment_id ) {
 	// Get donor info.
 	$user = get_userdata( $payment_meta['user_info']['id'] );
 
-	if ( $option_data['bpg-show-amount'] ) {
-		$action = sprintf( __( '%s just donated %s%1.2f to %s', 'buddypress-give' ), $user->display_name, give_currency_symbol(), (float) $payment_total, get_the_title( $payment_meta['form_id'] ) );
-	} else {
-		$action = sprintf( __( '%s just donated to %s', 'buddypress-give' ), $user->display_name, get_the_title( $payment_meta['form_id'] ) );
-	}
-
-	$content = empty( $payment_meta['message'] ) ? $option_data['bpg-default-message'] : $payment_meta['message'];
-
-	$component = 'activity';
-
-	$type = 'give_donation';
-
 	$primary_link = bp_core_get_userlink( $user->ID, false, true );
 
-	$user_id = $user->ID;
+	$donor = '<a href="' . $primary_link . '" title="' . $user->display_name . '">' . $user->display_name . '</a>';
 
-	$item_id = $payment_meta['form_id'];
+	switch ( $option_data['bpg-show-amount'] ) {
+		case "1":
+			$action = sprintf( __( '%s just donated %s%1.2f to %s', 'buddypress-give' ), $donor, give_currency_symbol(), (float) $payment_total, get_the_title( $payment_meta['form_id'] ) );
+			break;
+		default:
+			$action = sprintf( __( '%s just donated to %s', 'buddypress-give' ), $donor, get_the_title( $payment_meta['form_id'] ) );
+	}
 
-	$hide_sitewide = empty( $option_data['bpg-vis'] ) ? false : true;
-
+	// Add an item to the activity stream.
 	bp_activity_add( array(
 		'action' => $action,
-		'content' => $content,
-		'component' => $component,
-		'type' => $type,
+		'content' => empty( $payment_meta['message'] ) ? $option_data['bpg-default-message'] : $payment_meta['message'],
+		'component' => 'activity',
+		'type' => 'give_donation',
 		'primary_link' => $primary_link,
-		'user_id' => $user_id,
-		'item_id' => $item_id,
-		'hide_sitewide' => $hide_sitewide
+		'user_id' => $user->ID,
+		'item_id' => $payment_meta['form_id'],
+		'hide_sitewide' => empty( $option_data['bpg-vis'] ) ? false : true
 	) );
 }
 add_action( 'give_complete_purchase', 'bpg_add_activity_item' );
