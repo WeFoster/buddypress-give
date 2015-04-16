@@ -71,8 +71,8 @@ function bpg_register_admin_settings() {
 	);
 
 	// Check the option exists.
-	if ( false == get_option( 'bpg-options' ) ) {  
-		add_option( 'bpg-options', $defaults );
+	if ( false == get_blog_option( get_current_blog_id(), 'bpg-options' ) ) {  
+		add_blog_option( 'bpg-options', $defaults );
 	}
 
 	// Add a settings section.
@@ -175,7 +175,7 @@ function bpg_settings_field_callback_default_text( $args ) {
 	$message = isset( $options['bpg-default-message'] ) ? $options['bpg-default-message'] : '';
 
 	?>
-	<input type="text" name="bpg-options[bpg-default-message]" id="bpg-default-message" value="<?php echo $message; ?>" />
+	<textarea name="bpg-options[bpg-default-message]" id="bpg-default-message" class="large-text" rows="3"><?php echo $message; ?></textarea>
 	<p class="description">In a few words, explain what this option is about.</p>
 	<?php
 }
