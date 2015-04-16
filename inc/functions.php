@@ -30,7 +30,7 @@ add_action( 'give_after_donation_levels', 'bpg_custom_form_fields', 10, 1 );
 
 /**
  * Validate the custom form field.
- * 
+ *
  * @since 1.0.0
  *
  * @param array $valid_data
@@ -42,7 +42,7 @@ function bpg_validate_custom_fields( $valid_data, $data ) {
 		give_set_error( 'give_message', __( 'Please enter a custom donation message.', 'buddypress-give' ) );
 	}
 }
-add_action( 'give_checkout_error_checks', 'bpg_validate_custom_fields', 10, 2 );
+// add_action( 'give_checkout_error_checks', 'bpg_validate_custom_fields', 10, 2 );
 
 /**
  * Add data to payment meta.
