@@ -77,7 +77,6 @@ class Donation_Leaderboard_Widget extends WP_Widget {
 			<?php foreach ( $donors as $donor ) { ?>
 
 				<?php $user = get_userdata( $donor->user_id ); ?>
-<<<<<<< HEAD
 				<li class"vcard bp-give-leaderboard-item">
 					<div class="item-avatar">
 						<?php
@@ -99,22 +98,6 @@ class Donation_Leaderboard_Widget extends WP_Widget {
 						echo '<span class="bp-give-purchase-value">' . $donor->purchase_value . ' ' . give_get_currency() . '</span>';
 						} ?>
 					</div>
-=======
-				<li>
-				<?php
-				$avatar_args = array(
-					'item_id' => $user->ID,
-					'width' => 26,
-					'height' => 26,
-					'alt' => $user->display_name
-				);
-				echo bp_core_fetch_avatar( $avatar_args );
-				?>
-				<a href="<?php echo bp_core_get_user_domain( $user->ID ); ?>" title="<?php echo $user->display_name; ?>"><?php echo $user->display_name; ?></a>
-				<?php if ( $instance['show_total'] ) {
-					echo '<span class="purchase-value">' . give_currency_symbol() . $donor->purchase_value . '</span>';
-				} ?>
->>>>>>> 21814aec45a380747018432896e2159b000682fa
 				</li>
 			<?php } ?>
 			</ul>
