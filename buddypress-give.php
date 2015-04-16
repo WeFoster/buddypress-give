@@ -92,7 +92,7 @@ function bpg_enqueue_js() {
 
 	wp_enqueue_script( 'bpg-script', plugins_url( 'js/script.js', __FILE__ ), array( 'jquery' ), NULL, true );
 }
-// add_action( 'wp_enqueue_scripts', 'bpg_enqueue_js' );
+add_action( 'wp_enqueue_scripts', 'bpg_enqueue_js' );
 
 /**
  * Enqueue the CSS.

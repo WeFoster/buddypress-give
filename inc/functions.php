@@ -11,12 +11,14 @@ if ( ! defined( 'ABSPATH' ) )
 	exit;
 
 /**
- * Output a custom form field.
+ * Output custom form field(s).
  * 
  * @since 1.0.0
  */
 function bpg_custom_form_fields( $form_id ) {
 
+	// Get user data.
+	$user = get_userdata( bp_loggedin_user_id() );
 	?>
 	<div id="give-message-wrap">
 		<label class="give-label" for="give-message"><?php _e( 'Custom donation message', 'buddypress-give' ); ?></label>
@@ -24,6 +26,9 @@ function bpg_custom_form_fields( $form_id ) {
 
 		<textarea class="give-textarea" name="give_message" id="give-message"></textarea>
 	</div>
+
+	<!-- Pass user email in a hidden field -->
+	<input type="hidden" name="give_email" value="<?php echo $user->user_email; ?>">
 	<?php
 }
 add_action( 'give_after_donation_levels', 'bpg_custom_form_fields', 10, 1 );
