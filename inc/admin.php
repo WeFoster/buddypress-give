@@ -71,8 +71,8 @@ function bpg_register_admin_settings() {
 	);
 
 	// Check the option exists.
-	if ( false == get_option( 'bpg-options' ) ) {  
-		add_option( 'bpg-options', $defaults );
+	if ( false == get_blog_option( get_current_blog_id(), 'bpg-options' ) ) {  
+		add_blog_option( 'bpg-options', $defaults );
 	}
 
 	// Add a settings section.
