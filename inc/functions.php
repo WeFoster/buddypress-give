@@ -89,6 +89,28 @@ function bpg_purchase_details( $payment_meta, $user_info ) {
 add_action( 'give_payment_personal_details_list', 'bpg_purchase_details', 10, 2 );
 
 /**
+ * Add donation message to the purchase summary shortcode output.
+ * 
+ * @since 1.0.0
+ *
+ * @param object $payment An object of type WP_Post
+ */
+function bpg_purchase_summary( $payment ) {
+
+	$payment_meta = give_get_payment_meta( $payment->ID );
+
+	if ( $payment_meta['message'] ) {
+		?>
+		<tr>
+		<td><strong><?php _e( 'Message', 'buddypress-give' ); ?>:</strong></td>
+		<td><?php echo $payment_meta['message']; ?></td>
+		</tr>
+		<?php
+	}
+}
+add_action( 'give_payment_receipt_after', 'bpg_purchase_summary' );
+
+/**
  * Add an activity item.
  * 
  * @since 1.0.0
