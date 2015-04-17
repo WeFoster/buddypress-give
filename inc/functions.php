@@ -248,14 +248,17 @@ function bpg_page_content() {
  */
 function bpg_redirect() {
 
+	// Bail if the xProfile component isn't active.
 	if ( ! bp_is_active( 'xprofile' ) )
 		return;
 
-	if ( is_user_logged_in() && is_page( 'donations' ) ) {
+	// Bail if the user isn't logged in.
+	if ( ! is_user_logged_in() )
+		return;
 
-		$bp = buddypress();
-		wp_redirect( bp_loggedin_user_domain() . $bp->profile->slug . '/my-donations/', 301 );
-		exit();
+	if ( is_page( 'donation-history' ) ) {
+
+		bp_core_redirect( bp_loggedin_user_domain() . buddypress()->profile->slug . '/my-donations/' );
 	}
 }
-// add_action( 'template_redirect', 'bpg_redirect' );
+add_action( 'wp', 'bpg_redirect' );
