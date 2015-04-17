@@ -219,15 +219,16 @@ function bpg_page_title() {
  * @since 1.0.0
  */
 function bpg_page_content() {
+
+	$give_settings = get_blog_option( get_current_blog_id(), 'give_settings' );
+
+	$option_data = get_blog_option( get_current_blog_id(), 'bpg-options' );
+
+	echo get_post_field( 'post_content', $give_settings['history_page'] );
 	?>
-	<div id="give-my-donations">        
-	<?php echo do_shortcode( '[donation_history]' ); ?>
-	</div>
 
 	<div>
 	<?php
-
-	$option_data = get_blog_option( get_current_blog_id(), 'bpg-options' );
 
 	if ( $option_data['bpg-form-id'] ) {
 
