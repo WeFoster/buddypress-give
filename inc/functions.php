@@ -156,3 +156,97 @@ function bpg_add_activity_item( $payment_id ) {
 	) );
 }
 add_action( 'give_complete_purchase', 'bpg_add_activity_item' );
+
+/**
+ * Add a sub nav item to the member profile area.
+ *
+ * @author bowefrankema
+ * @since 1.0.0
+ */
+function bpg_setup_donations_nav() {
+
+	if ( ! bp_is_active( 'xprofile' ) )
+		return;
+
+    $bp = buddypress();
+
+    $profile_link = bp_loggedin_user_domain() . $bp->profile->slug . '/';
+
+    $args = array(
+        'name' => __( 'My Donations', 'buddypress-give' ),
+        'slug' => 'my-donations',
+        'parent_url' => $profile_link,
+        'parent_slug' => $bp->profile->slug,
+        'screen_function' => 'bpg_give_screen_donations',
+        'user_has_access' => ( bp_is_my_profile() || is_super_admin() ),
+        'position' => 40
+    );
+    bp_core_new_subnav_item( $args );
+}
+add_action( 'bp_setup_nav', 'bpg_setup_donations_nav' );
+
+/**
+ * Sets up and displays the screen output for the sub nav item.
+ *
+ * @author bowefrankema
+ * @since 1.0.0
+ */
+function bpg_give_screen_donations() {
+
+    add_action( 'bp_template_title', 'bpg_page_title' );
+    add_action( 'bp_template_content', 'bpg_page_content' );
+    bp_core_load_template( apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
+}
+
+/**
+ * Output a page title.
+ *
+ * @author bowefrankema
+ * @since 1.0.0
+ */
+function bpg_page_title() {
+    echo __( 'Your Donations', 'buddypress-give' );
+}
+
+/**
+ * Output page content.
+ *
+ * @author bowefrankema
+ * @since 1.0.0
+ */
+function bpg_page_content() {
+    ?>
+    <div id="give-my-donations">        
+    <?php echo do_shortcode( '[donation_history]' ); ?>
+    </div>
+
+    <div>
+    <?php
+    _e( 'Make a donation', 'buddypress-give' );
+
+	// @todo Make the form ID dynamic.
+    // echo do_shortcode( '[give_form id="688"]' );
+    ?>
+    </div>
+    <?php
+}
+
+/**
+ * Redirect logged in users from the Give page to the BuddyPress page.
+ *
+ * @author bowefrankema
+ * @since 1.0.0
+ */
+function bpg_redirect() {
+
+	if ( ! bp_is_active( 'xprofile' ) )
+		return;
+
+	if ( is_user_logged_in() && is_page( 'donations' ) ) {
+
+		$bp = buddypress();
+		wp_redirect( bp_loggedin_user_domain() . $bp->profile->slug . '/my-donations/', 301 );
+		exit(); 
+	}
+}
+// add_action( 'template_redirect', 'bpg_redirect' );
