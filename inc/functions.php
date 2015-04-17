@@ -135,6 +135,10 @@ function bpg_add_activity_item( $payment_id ) {
 
 	$donor = '<a href="' . $primary_link . '" title="' . $user->display_name . '">' . $user->display_name . '</a>';
 
+	$option_data['bpg-show-amount'] = isset( $option_data['bpg-show-amount'] ) ? $option_data['bpg-show-amount'] : '';
+
+	$option_data['bpg-default-message'] = isset( $option_data['bpg-default-message'] ) ? $option_data['bpg-default-message'] : '';
+
 	switch ( $option_data['bpg-show-amount'] ) {
 		case "1":
 			$action = sprintf( __( '%s just donated %s%1.2f to %s', 'buddypress-give' ), $donor, give_currency_symbol(), (float) $payment_total, get_the_title( $payment_meta['form_id'] ) );
@@ -222,10 +226,15 @@ function bpg_page_content() {
 
 	<div>
 	<?php
-	_e( 'Make a donation', 'buddypress-give' );
 
-	// @todo Make the form ID dynamic.
-	// echo do_shortcode( '[give_form id="688"]' );
+	$option_data = get_blog_option( get_current_blog_id(), 'bpg-options' );
+
+	if ( $option_data['bpg-form-id'] ) {
+
+		_e( 'Make a donation', 'buddypress-give' );
+
+		echo do_shortcode( '[give_form id="' . $option_data['bpg-form-id'] . '"]' );
+	}
 	?>
 	</div>
 	<?php

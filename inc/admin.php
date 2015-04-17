@@ -67,12 +67,13 @@ function bpg_register_admin_settings() {
 	$defaults = array(
 		'bpg-vis' => '',
 		'bpg-show-amount' => '',
-		'bpg-default-message' => ''
+		'bpg-default-message' => '',
+		'bpg-form-id' => ''
 	);
 
 	// Check the option exists.
 	if ( false == get_blog_option( get_current_blog_id(), 'bpg-options' ) ) {  
-		add_blog_option( 'bpg-options', $defaults );
+		add_blog_option( get_current_blog_id(), 'bpg-options', $defaults );
 	}
 
 	// Add a settings section.
@@ -116,6 +117,15 @@ function bpg_register_admin_settings() {
 		'bpgive'
 	);
 
+	// Add a settings field.
+	add_settings_field(
+		'bpg-form-id',
+		__( 'Label 4', 'buddypress-give' ),
+		'bpg_settings_field_callback_form_id',
+		'give-buddypress',
+		'bpgive'
+	);
+
 	// Register a setting.
 	register_setting(
 		'give-buddypress',
@@ -142,7 +152,7 @@ function bpg_settings_field_callback_vis( $args ) {
 
 	$options = get_blog_option( get_current_blog_id(), 'bpg-options' );
 	?>
-	<input type="checkbox" name="bpg-options[bpg-vis]" id="bpg-vis" value="1" <?php checked( 1, isset( $options['bpg-vis'] ) ? $options['bpg-vis'] : 0 ); ?> />
+	<input type="checkbox" name="bpg-options[bpg-vis]" id="bpg-vis" value="1" <?php checked( 1, isset( $options['bpg-vis'] ) ? $options['bpg-vis'] : '' ); ?> />
 	<label for="bpg-vis"><?php echo $args[0]; ?></label>
 	<p class="description">In a few words, explain what this option is about.</p>
 	<?php
@@ -157,7 +167,7 @@ function bpg_settings_field_callback_amount( $args ) {
 
 	$options = get_blog_option( get_current_blog_id(), 'bpg-options' );
 	?>
-	<input type="checkbox" name="bpg-options[bpg-show-amount]" id="bpg-show-amount" value="1" <?php checked( 1, isset( $options['bpg-show-amount'] ) ? $options['bpg-show-amount'] : 0 ); ?> />
+	<input type="checkbox" name="bpg-options[bpg-show-amount]" id="bpg-show-amount" value="1" <?php checked( 1, isset( $options['bpg-show-amount'] ) ? $options['bpg-show-amount'] : '' ); ?> />
 	<label for="bpg-show-amount"><?php echo $args[0]; ?></label>
 	<p class="description">In a few words, explain what this option is about.</p>
 	<?php
@@ -172,10 +182,27 @@ function bpg_settings_field_callback_default_text( $args ) {
 
 	$options = get_blog_option( get_current_blog_id(), 'bpg-options' );
 
-	$message = isset( $options['bpg-default-message'] ) ? $options['bpg-default-message'] : '';
+	$options['bpg-default-message'] = isset( $options['bpg-default-message'] ) ? $options['bpg-default-message'] : '';
 
 	?>
-	<textarea name="bpg-options[bpg-default-message]" id="bpg-default-message" class="large-text" rows="3"><?php echo $message; ?></textarea>
+	<textarea name="bpg-options[bpg-default-message]" id="bpg-default-message" class="large-text" rows="3"><?php echo $options['bpg-default-message']; ?></textarea>
+	<p class="description">In a few words, explain what this option is about.</p>
+	<?php
+}
+
+/**
+ * Add an input to the field.
+ *
+ * @since 1.0.0
+ */
+function bpg_settings_field_callback_form_id( $args ) {
+
+	$options = get_blog_option( get_current_blog_id(), 'bpg-options' );
+
+	$options['bpg-form-id'] = isset( $options['bpg-form-id'] ) ? $options['bpg-form-id'] : '';
+
+	?>
+	<input type="text" name="bpg-options[bpg-form-id]" id="bpg-form-id" value="<?php echo $options['bpg-form-id']; ?>" />
 	<p class="description">In a few words, explain what this option is about.</p>
 	<?php
 }
