@@ -20,11 +20,11 @@ function bpg_custom_form_fields( $form_id ) {
 	// Get user data.
 	$user = get_userdata( bp_loggedin_user_id() );
 	?>
-	<div id="give-message-wrap" class="bp-give-message-wrap">
+	<div id="give-message-wrap">
 		<label class="give-label" for="give-message"><?php _e( 'Custom donation message', 'buddypress-give' ); ?></label>
 		<span class="give-tooltip icon icon-question" data-tooltip="<?php _e( 'Please enter a custom donation message', 'buddypress-give' ) ?>"></span>
 
-		<textarea class="give-textarea bp-give-textarea" name="give_message" id="give-message"></textarea>
+		<textarea class="give-textarea" name="give_message" id="give-message"></textarea>
 	</div>
 
 	<!-- Pass user email in a hidden field -->
@@ -80,7 +80,7 @@ function bpg_purchase_details( $payment_meta, $user_info ) {
 	}
 
 	?>
-	<div class="bp-give-message-data">
+	<div class="message-data">
 	<label><?php echo __( 'Message', 'buddypress-give' ); ?></label>
 	<?php echo wpautop( $payment_meta['message'] ); ?>
 	</div>
@@ -168,20 +168,20 @@ function bpg_setup_donations_nav() {
 	if ( ! bp_is_active( 'xprofile' ) )
 		return;
 
-    $bp = buddypress();
+	$bp = buddypress();
 
-    $profile_link = bp_loggedin_user_domain() . $bp->profile->slug . '/';
+	$profile_link = bp_loggedin_user_domain() . $bp->profile->slug . '/';
 
-    $args = array(
-        'name' => __( 'My Donations', 'buddypress-give' ),
-        'slug' => 'my-donations',
-        'parent_url' => $profile_link,
-        'parent_slug' => $bp->profile->slug,
-        'screen_function' => 'bpg_give_screen_donations',
-        'user_has_access' => ( bp_is_my_profile() || is_super_admin() ),
-        'position' => 40
-    );
-    bp_core_new_subnav_item( $args );
+	$args = array(
+		'name' => __( 'My Donations', 'buddypress-give' ),
+		'slug' => 'my-donations',
+		'parent_url' => $profile_link,
+		'parent_slug' => $bp->profile->slug,
+		'screen_function' => 'bpg_give_screen_donations',
+		'user_has_access' => ( bp_is_my_profile() || is_super_admin() ),
+		'position' => 40
+	);
+	bp_core_new_subnav_item( $args );
 }
 add_action( 'bp_setup_nav', 'bpg_setup_donations_nav' );
 
@@ -193,9 +193,9 @@ add_action( 'bp_setup_nav', 'bpg_setup_donations_nav' );
  */
 function bpg_give_screen_donations() {
 
-    add_action( 'bp_template_title', 'bpg_page_title' );
-    add_action( 'bp_template_content', 'bpg_page_content' );
-    bp_core_load_template( apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
+	add_action( 'bp_template_title', 'bpg_page_title' );
+	add_action( 'bp_template_content', 'bpg_page_content' );
+	bp_core_load_template( apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
 }
 
 /**
@@ -205,7 +205,7 @@ function bpg_give_screen_donations() {
  * @since 1.0.0
  */
 function bpg_page_title() {
-    echo __( 'Your Donations', 'buddypress-give' );
+	echo __( 'Your Donations', 'buddypress-give' );
 }
 
 /**
@@ -215,20 +215,20 @@ function bpg_page_title() {
  * @since 1.0.0
  */
 function bpg_page_content() {
-    ?>
-    <div id="give-my-donations">        
-    <?php echo do_shortcode( '[donation_history]' ); ?>
-    </div>
+	?>
+	<div id="give-my-donations">        
+	<?php echo do_shortcode( '[donation_history]' ); ?>
+	</div>
 
-    <div>
-    <?php
-    _e( 'Make a donation', 'buddypress-give' );
+	<div>
+	<?php
+	_e( 'Make a donation', 'buddypress-give' );
 
 	// @todo Make the form ID dynamic.
-    // echo do_shortcode( '[give_form id="688"]' );
-    ?>
-    </div>
-    <?php
+	// echo do_shortcode( '[give_form id="688"]' );
+	?>
+	</div>
+	<?php
 }
 
 /**
@@ -246,7 +246,7 @@ function bpg_redirect() {
 
 		$bp = buddypress();
 		wp_redirect( bp_loggedin_user_domain() . $bp->profile->slug . '/my-donations/', 301 );
-		exit(); 
+		exit();
 	}
 }
 // add_action( 'template_redirect', 'bpg_redirect' );
