@@ -99,11 +99,18 @@ class Donation_Badge {
 	 */
 	protected function purchase_value() {
 
-		global $wpdb;
+		$purchase_value = wp_cache_get( $this->user_id, 'purchase_value' );
 
-		$table_name = $wpdb->prefix . 'give_customers';
+		if ( false === $purchase_value ) {
 
-		$purchase_value = $wpdb->get_var( $wpdb->prepare( "SELECT purchase_value FROM {$table_name} WHERE user_id = %d", $this->user_id ) );
+			global $wpdb;
+
+			$table_name = $wpdb->prefix . 'give_customers';
+
+			$purchase_value = $wpdb->get_var( $wpdb->prepare( "SELECT purchase_value FROM {$table_name} WHERE user_id = %d", $this->user_id ) );
+
+			wp_cache_set( $this->user_id, $purchase_value, 'purchase_value' );
+		}
 
 		$this->purchase_value = floatval( $purchase_value );
 	}
