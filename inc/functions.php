@@ -20,11 +20,11 @@ function bpg_custom_form_fields( $form_id ) {
 	// Get user data.
 	$user = get_userdata( bp_loggedin_user_id() );
 	?>
-	<div id="give-message-wrap">
+	<div class="bp-give-message-wrap">
 		<label class="give-label" for="give-message"><?php _e( 'Custom donation message', 'buddypress-give' ); ?></label>
 		<span class="give-tooltip icon icon-question" data-tooltip="<?php _e( 'Please enter a custom donation message', 'buddypress-give' ) ?>"></span>
 
-		<textarea class="give-textarea" name="give_message" id="give-message"></textarea>
+		<textarea class="bp-give-textarea" name="give_message" id="give-message"></textarea>
 	</div>
 
 	<!-- Pass user email in a hidden field -->
@@ -80,7 +80,7 @@ function bpg_purchase_details( $payment_meta, $user_info ) {
 	}
 
 	?>
-	<div class="message-data">
+	<div class="bp-give-message-data">
 		<label><?php echo __( 'Message', 'buddypress-give' ); ?></label>
 		<?php echo wpautop( $payment_meta['message'] ); ?>
 	</div>
