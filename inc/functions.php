@@ -50,7 +50,7 @@ function bpg_validate_custom_fields( $valid_data, $data ) {
 // add_action( 'give_checkout_error_checks', 'bpg_validate_custom_fields', 10, 2 );
 
 /**
- * Add data to payment meta.
+ * Add donation message to payment meta.
  * 
  * @since 1.0.0
  *
@@ -81,8 +81,8 @@ function bpg_purchase_details( $payment_meta, $user_info ) {
 
 	?>
 	<div class="message-data">
-	<label><?php echo __( 'Message', 'buddypress-give' ); ?></label>
-	<?php echo wpautop( $payment_meta['message'] ); ?>
+		<label><?php echo __( 'Message', 'buddypress-give' ); ?></label>
+		<?php echo wpautop( $payment_meta['message'] ); ?>
 	</div>
 	<?php
 }
@@ -102,8 +102,8 @@ function bpg_purchase_summary( $payment ) {
 	if ( $payment_meta['message'] ) {
 		?>
 		<tr>
-		<td><strong><?php _e( 'Message', 'buddypress-give' ); ?>:</strong></td>
-		<td><?php echo $payment_meta['message']; ?></td>
+			<td><strong><?php _e( 'Message', 'buddypress-give' ); ?>:</strong></td>
+			<td><?php echo $payment_meta['message']; ?></td>
 		</tr>
 		<?php
 	}
@@ -128,6 +128,14 @@ function bpg_add_activity_item( $payment_id ) {
 	// Get option data.
 	$option_data = get_blog_option( get_current_blog_id(), 'bpg-options' );
 
+	if ( ! isset( $option_data['bpg-show-amount'] ) ) {
+		$option_data['bpg-show-amount'] = '';
+	}
+
+	if ( ! isset( $option_data['bpg-default-message'] ) ) {
+		$option_data['bpg-default-message'] = '';
+	}
+
 	// Get donor info.
 	$user = get_userdata( $payment_meta['user_info']['id'] );
 
@@ -135,16 +143,10 @@ function bpg_add_activity_item( $payment_id ) {
 
 	$donor = '<a href="' . $primary_link . '" title="' . $user->display_name . '">' . $user->display_name . '</a>';
 
-	$option_data['bpg-show-amount'] = isset( $option_data['bpg-show-amount'] ) ? $option_data['bpg-show-amount'] : '';
-
-	$option_data['bpg-default-message'] = isset( $option_data['bpg-default-message'] ) ? $option_data['bpg-default-message'] : '';
-
-	switch ( $option_data['bpg-show-amount'] ) {
-		case "1":
-			$action = sprintf( __( '%s just donated %s%1.2f to %s', 'buddypress-give' ), $donor, give_currency_symbol(), (float) $payment_total, get_the_title( $payment_meta['form_id'] ) );
-			break;
-		default:
-			$action = sprintf( __( '%s just donated to %s', 'buddypress-give' ), $donor, get_the_title( $payment_meta['form_id'] ) );
+	if ( $option_data['bpg-show-amount'] == "1" ) {
+		$action = sprintf( __( '%s just donated %s%1.2f to %s', 'buddypress-give' ), $donor, give_currency_symbol(), (float) $payment_total, get_the_title( $payment_meta['form_id'] ) );
+	} else {
+		$action = sprintf( __( '%s just donated to %s', 'buddypress-give' ), $donor, get_the_title( $payment_meta['form_id'] ) );
 	}
 
 	// Add an item to the activity stream.
@@ -225,10 +227,6 @@ function bpg_page_content() {
 	$option_data = get_blog_option( get_current_blog_id(), 'bpg-options' );
 
 	echo get_post_field( 'post_content', $give_settings['history_page'] );
-	?>
-
-	<div>
-	<?php
 
 	if ( $option_data['bpg-form-id'] ) {
 
@@ -236,9 +234,6 @@ function bpg_page_content() {
 
 		echo do_shortcode( '[give_form id="' . $option_data['bpg-form-id'] . '"]' );
 	}
-	?>
-	</div>
-	<?php
 }
 
 /**
@@ -269,7 +264,7 @@ add_action( 'wp', 'bpg_redirect' );
  *
  * @since 1.0.0
  *
- * @param string $avatar The user's avatar HTML.
+ * @param string $avatar The member's avatar and badge HTML.
  */
 function bpg_add_donation_badge( $avatar ) {
 

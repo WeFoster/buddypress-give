@@ -263,7 +263,8 @@ function bpg_settings_field_callback_default_text( $args ) {
 
 	$options = get_blog_option( get_current_blog_id(), 'bpg-options' );
 
-	$options['bpg-default-message'] = isset( $options['bpg-default-message'] ) ? $options['bpg-default-message'] : '';
+	if ( ! isset( $options['bpg-default-message'] ) )
+		$options['bpg-default-message'] = '';
 
 	?>
 	<textarea name="bpg-options[bpg-default-message]" id="bpg-default-message" class="large-text" rows="3"><?php echo $options['bpg-default-message']; ?></textarea>
@@ -280,7 +281,8 @@ function bpg_settings_field_callback_form_id( $args ) {
 
 	$options = get_blog_option( get_current_blog_id(), 'bpg-options' );
 
-	$options['bpg-form-id'] = isset( $options['bpg-form-id'] ) ? $options['bpg-form-id'] : '';
+	if ( ! isset( $options['bpg-form-id'] ) )
+		$options['bpg-form-id'] = '';
 
 	?>
 	<input type="text" name="bpg-options[bpg-form-id]" id="bpg-form-id" value="<?php echo $options['bpg-form-id']; ?>" />

@@ -67,12 +67,15 @@ class Donation_Badge {
 			return $badge;
 		}
 
+		// Count the number of badges available.
 		$count = count( $badges['_give_badges'] );
 
+		// Get the total donated so far.
 		$this->purchase_value();
 
 		for ( $i = 0; $i < $count; $i++ ) {
 
+			// Check if this is the last badge.
 			if ( $i == ( $count - 1 ) ) {
 
 				if ( ( $this->purchase_value > floatval( $badges['_give_badges'][$i]['_give_amount'] ) ) ) {
@@ -99,6 +102,7 @@ class Donation_Badge {
 	 */
 	protected function purchase_value() {
 
+		// Check if the amount is cached.
 		$purchase_value = wp_cache_get( $this->user_id, 'purchase_value' );
 
 		if ( false === $purchase_value ) {
@@ -109,6 +113,7 @@ class Donation_Badge {
 
 			$purchase_value = $wpdb->get_var( $wpdb->prepare( "SELECT purchase_value FROM {$table_name} WHERE user_id = %d", $this->user_id ) );
 
+			// Cache the query result.
 			wp_cache_set( $this->user_id, $purchase_value, 'purchase_value' );
 		}
 

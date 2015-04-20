@@ -1,6 +1,3 @@
-jQuery(document).ready(function($) {
-
-	'use strict';
-
-	$("input#give-email").prop('disabled', true);
+jQuery(document).ready(function(a) {
+    a("input#give-email").prop("disabled", !0)
 });

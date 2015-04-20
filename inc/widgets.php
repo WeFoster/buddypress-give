@@ -47,15 +47,43 @@ class Donation_Leaderboard_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 
-		$args['widget_id'] = ! empty( $args['widget_id'] ) ? $args['widget_id'] : $this->id;
-		$args['before_widget'] = ! empty( $args['before_widget'] ) ? $args['before_widget'] : '';
-		$args['after_widget'] = ! empty( $args['after_widget'] ) ? $args['after_widget'] : '';
-		$args['before_title'] = ! empty( $args['before_title'] ) ? $args['before_title'] : '';
-		$args['after_title'] = ! empty( $args['after_title'] ) ? $args['after_title'] : '';
+		// Check if widget_id is set.
+		if ( ! isset( $args['widget_id'] ) )
+			$args['widget_id'] = $this->id;
 
-		$instance['title'] = ! empty( $instance['title'] ) ? sanitize_title( $instance['title'] ) : __( 'Top donors', 'buddypress-give' );
-		$instance['number'] = ! empty( $instance['number'] ) ? absint( $instance['number'] ) : 5;
-		$instance['show_total'] = isset( $instance['show_total'] ) ? (bool) $instance['show_total'] : false;
+		// Check if before_widget is set.
+		if ( ! isset( $args['before_widget'] ) )
+			$args['before_widget'] = '';
+
+		// Check if after_widget is set.
+		if ( ! isset( $args['after_widget'] ) )
+			$args['after_widget'] = '';
+
+		// Check if before_title is set.
+		if ( ! isset( $args['before_title'] ) )
+			$args['before_title'] = '';
+
+		// Check if after_title is set.
+		if ( ! isset( $args['after_title'] ) )
+			$args['after_title'] = '';
+
+		// Check if title is set.
+		if ( ! isset( $instance['title'] ) )
+			$instance['title'] = __( 'Top donors', 'buddypress-give' );
+		else
+			$instance['title'] = sanitize_title( $instance['title'] );
+
+		// Check if number is set.
+		if ( ! isset( $instance['number'] ) )
+			$instance['number'] = 5;
+		else
+			$instance['number'] = absint( $instance['number'] );
+
+		// Check if show_total is set.
+		if ( ! isset( $instance['show_total'] ) )
+			$instance['show_total'] = false;
+		else
+			$instance['show_total'] = (bool) $instance['show_total'];
 
 		echo $args['before_widget'];
 
@@ -73,36 +101,26 @@ class Donation_Leaderboard_Widget extends WP_Widget {
 		$donors = $customers->get_customers( $query_args );
 
 		if ( $donors ) { ?>
-			<ul class="bp-give-leaderboard item-list">
+			<ul>
 			<?php foreach ( $donors as $donor ) { ?>
 
 				<?php $user = get_userdata( $donor->user_id ); ?>
-				<li class"vcard bp-give-leaderboard-item">
-					<div class="item-avatar">
-						<?php
-						$avatar_args = array(
-							'item_id' => $user->ID,
-							'width' => 26,
-							'height' => 26,
-							'alt' => $user->display_name
-						);
-						echo bp_core_fetch_avatar( $avatar_args );
-						?>
-					</div>
-					<div class="item-title">
-						<a href="<?php echo bp_core_get_user_domain( $user->ID ); ?>" title="<?php echo $user->display_name; ?>"><?php echo $user->display_name; ?>
-						</a>
-					</div>
-					<div class="item-meta">
-						<?php if ( $instance['show_total'] ) {
-						echo '<span class="bp-give-purchase-value">' . $donor->purchase_value . ' ' . give_get_currency() . '</span>';
-						} ?>
-					</div>
+				<li>
+					<?php echo bp_core_fetch_avatar( array(
+						'item_id' => $user->ID,
+						'width' => 26,
+						'height' => 26,
+						'alt' => $user->display_name
+					) ); ?>
+					<a href="<?php echo bp_core_get_user_domain( $user->ID ); ?>" title="<?php echo $user->display_name; ?>"><?php echo $user->display_name; ?></a>
+					<?php if ( $instance['show_total'] ) {
+						echo '<span class="purchase-value">' . give_currency_symbol() . $donor->purchase_value . '</span>';
+					} ?>
 				</li>
 			<?php } ?>
 			</ul>
 		<?php } else { ?>
-			<p class="bp-give-notice"><?php _e( 'No donations have been made.', 'buddypress-give' ); ?></p>
+			<p><?php _e( 'No donations have been made.', 'buddypress-give' ); ?></p>
 		<?php }
 
 		echo $args['after_widget'];
@@ -121,9 +139,21 @@ class Donation_Leaderboard_Widget extends WP_Widget {
 	public function update( $new_instance, $old_instance ) {
 
 		$instance = $old_instance;
-		$instance['title'] = ! empty( $new_instance['title'] ) ? sanitize_title( $new_instance['title'] ) : '';
-		$instance['number'] = ! empty( $new_instance['number'] ) ? absint( $new_instance['number'] ) : 5;
-		$instance['show_total'] = ! empty( $new_instance['show_total'] ) ? (bool) $new_instance['show_total'] : false;
+
+		if ( ! isset( $new_instance['title'] ) )
+			$new_instance['title'] = '';
+		else
+			$new_instance['title'] = sanitize_title( $new_instance['title'] );
+
+		if ( ! isset( $new_instance['number'] ) )
+			$new_instance['number'] = 5;
+		else
+			$new_instance['number'] = absint( $new_instance['number'] );
+
+		if ( ! isset( $new_instance['show_total'] ) )
+			$new_instance['show_total'] = false;
+		else
+			$new_instance['show_total'] = (bool) $new_instance['show_total'];
 
 		return $instance;
 	}
@@ -138,23 +168,35 @@ class Donation_Leaderboard_Widget extends WP_Widget {
 	 */
 	public function form( $instance ) {
 
-		$instance['title'] = ! empty( $instance['title'] ) ? sanitize_title( $instance['title'] ) : '';
-		$instance['number'] = ! empty( $instance['number'] ) ? absint( $instance['number'] ) : 5;
-		$instance['show_total'] = ! empty( $instance['show_total'] ) ? (bool) $instance['show_total'] : false;
+		if ( ! isset( $instance['title'] ) )
+			$instance['title'] = '';
+		else
+			$instance['title'] = sanitize_title( $instance['title'] );
+
+		if ( ! isset( $instance['number'] ) )
+			$instance['number'] = 5;
+		else
+			$instance['number'] = absint( $instance['number'] );
+
+		if ( ! isset( $instance['show_total'] ) )
+			$instance['show_total'] = false;
+		else
+			$instance['show_total'] = (bool) $instance['show_total'];
+
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'buddypress-give' ); ?></label>
-		<input type="text" name="<?php echo $this->get_field_name( 'title' ); ?>" id="<?php echo $this->get_field_id( 'title' ); ?>" class="widefat" value="<?php echo $instance['title']; ?>" />
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'buddypress-give' ); ?></label>
+			<input type="text" name="<?php echo $this->get_field_name( 'title' ); ?>" id="<?php echo $this->get_field_id( 'title' ); ?>" class="widefat" value="<?php echo $instance['title']; ?>" />
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number of donors to show', 'buddypress-give' ); ?></label>
-		<input type="text" name="<?php echo $this->get_field_name( 'number' ); ?>" id="<?php echo $this->get_field_id( 'number' ); ?>" value="<?php echo $instance['number']; ?>" size="3" />
+			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number of donors to show', 'buddypress-give' ); ?></label>
+			<input type="text" name="<?php echo $this->get_field_name( 'number' ); ?>" id="<?php echo $this->get_field_id( 'number' ); ?>" value="<?php echo $instance['number']; ?>" size="3" />
 		</p>
 
 		<p>
-		<input type="checkbox" name="<?php echo $this->get_field_name( 'show_total' ); ?>" id="<?php echo $this->get_field_id( 'show_total' ); ?>" class="checkbox" <?php checked( $instance['show_total'] ); ?> />
-		<label for="<?php echo $this->get_field_id( 'show_total' ); ?>"><?php _e( 'Display total donated?', 'buddypress-give' ); ?></label>
+			<input type="checkbox" name="<?php echo $this->get_field_name( 'show_total' ); ?>" id="<?php echo $this->get_field_id( 'show_total' ); ?>" class="checkbox" <?php checked( $instance['show_total'] ); ?> />
+			<label for="<?php echo $this->get_field_id( 'show_total' ); ?>"><?php _e( 'Display total donated?', 'buddypress-give' ); ?></label>
 		</p>
 		<?php
 	}
