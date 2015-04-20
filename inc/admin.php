@@ -11,26 +11,36 @@ if ( ! defined( 'ABSPATH' ) )
 	exit;
 
 /**
- * Add a submenu under Donations.
+ * Add sub menu items(s).
  *
  * @since 1.0.0
  */
 function bpg_add_submenu() {
 
-	// Add a submenu page.
+	// Add a BuddyPress sub menu page.
 	add_submenu_page(
 		'edit.php?post_type=give_forms',
 		'Give Settings: BuddyPress',
 		'BuddyPress',
-		'administrator',
+		'manage_options',
 		'give-buddypress',
 		'bpg_settings_page'
+	);
+
+	// Add a Badges sub menu page.
+	add_submenu_page(
+		'edit.php?post_type=give_forms',
+		'Give Settings: Badges',
+		'Badges',
+		'manage_options',
+		'give-badges',
+		'bpg_badges_page'
 	);
 }
 add_action( 'admin_menu', 'bpg_add_submenu' );
 
 /**
- * Output the content for the page.
+ * Output content for the BuddyPress page.
  *
  * @since 1.0.0
  */
@@ -38,8 +48,6 @@ function bpg_settings_page() {
 
 	?>
 	<div class="wrap">
-
-	<div id="icon-themes" class="icon32"></div>
 
 	<h2><?php _e( 'BuddyPress', 'buddypress-give' ); ?></h2>
 
@@ -56,6 +64,80 @@ function bpg_settings_page() {
 	</div>
 	<?php
 }
+
+/**
+ * Output content for the Badges page.
+ *
+ * @since 1.0.0
+ */
+function bpg_badges_page() {
+	?>
+	<div class="wrap">
+
+		<h2><?php _e( 'Badges', 'buddypress-give' ); ?></h2>
+		<?php cmb2_metabox_form( '_give_badges_metabox', 'bpg-badges' ); ?>
+	</div>
+	<?php
+}
+
+/**
+ * Add a cmb2 metabox to the Badges page.
+ *
+ * @since 1.0.0
+ */
+function bpg_add_options_page_metabox() {
+
+	$prefix = '_give_';
+
+	$cmb_group = new_cmb2_box( array(
+		'id'        => $prefix . 'badges_metabox',
+		'show_on'   => array(
+			'key'   => 'options-page',
+			'value' => array( 'bpg-badges' )
+		)
+	) );
+
+	$group_field_id = $cmb_group->add_field( array(
+		'id'          => $prefix . 'badges',
+		'type'        => 'group',
+		'description' => __( 'Set the badges members get when they have donated over a given amount.', 'buddypress-give' ),
+		'options'     => array(
+			'group_title'   => __( 'Badge {#}', 'buddypress-give' ),
+			'add_button'    => __( 'Add another badge', 'buddypress-give' ),
+			'remove_button' => __( 'Remove this badge', 'buddypress-give' ),
+			'sortable'      => true
+		)
+	) );
+
+	$cmb_group->add_group_field( $group_field_id, array(
+		'name'       => __( 'Text', 'buddypress-give' ),
+		'id'         => $prefix . 'text',
+		'type'       => 'text'
+	) );
+
+	$cmb_group->add_group_field( $group_field_id, array(
+		'name'       => __( 'Amount', 'buddypress-give' ),
+		'id'         => $prefix . 'amount',
+		'type'       => 'text_money',
+		'before_field' => give_currency_symbol(),
+		'attributes' => array(
+			'placeholder' => give_format_amount( '0.00' )
+		)
+	) );
+
+	$cmb_group->add_group_field( $group_field_id, array(
+		'name'         => __( 'Image', 'buddypress-give' ),
+		'id'           => $prefix . 'image',
+		'type'         => 'file',
+		'preview_size' => array( 60, 60 ),
+		'options' => array(
+			'url' => true,
+			'add_upload_file_text' => __( 'Upload or choose badge', 'buddypress-give' )
+		)
+	) );
+
+}
+add_action( 'cmb2_init', 'bpg_add_options_page_metabox' );
 
 /**
  * Register the settings.
@@ -130,6 +212,12 @@ function bpg_register_admin_settings() {
 	register_setting(
 		'give-buddypress',
 		'bpg-options'
+	);
+
+	// Register a setting.
+	register_setting( 
+		'bpg-badges', 
+		'bpg-badges' 
 	);
 }
 add_action( 'admin_init', 'bpg_register_admin_settings', 99 );
