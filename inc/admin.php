@@ -49,17 +49,15 @@ function bpg_settings_page() {
 	?>
 	<div class="wrap">
 
-	<h2><?php _e( 'BuddyPress', 'buddypress-give' ); ?></h2>
+		<h2><?php _e( 'BuddyPress', 'buddypress-give' ); ?></h2>
+		<?php settings_errors(); ?>
+		<p><?php _e( 'The settings on this page relate to BuddyPress.', 'buddypress-give' ); ?></p>
 
-	<?php settings_errors(); ?>
-
-	<p><?php _e( 'Page text to be added.', 'buddypress-give' ); ?></p>
-
-	<form method="post" action="options.php">
-		<?php settings_fields( 'give-buddypress' ); ?>
-		<?php do_settings_sections( 'give-buddypress' ); ?>           
-		<?php submit_button(); ?>
-	</form>
+		<form method="post" action="options.php">
+			<?php settings_fields( 'give-buddypress' ); ?>
+			<?php do_settings_sections( 'give-buddypress' ); ?>           
+			<?php submit_button(); ?>
+		</form>
 
 	</div>
 	<?php
@@ -73,8 +71,9 @@ function bpg_settings_page() {
 function bpg_badges_page() {
 	?>
 	<div class="wrap">
-
 		<h2><?php _e( 'Badges', 'buddypress-give' ); ?></h2>
+		<p><?php _e( 'Set the badges members receive when they have donated over a given amount.', 'buddypress-give' ); ?></p>
+
 		<?php cmb2_metabox_form( '_give_badges_metabox', 'bpg-badges' ); ?>
 	</div>
 	<?php
@@ -90,35 +89,34 @@ function bpg_add_options_page_metabox() {
 	$prefix = '_give_';
 
 	$cmb_group = new_cmb2_box( array(
-		'id'        => $prefix . 'badges_metabox',
-		'show_on'   => array(
-			'key'   => 'options-page',
+		'id' => $prefix . 'badges_metabox',
+		'show_on' => array(
+			'key' => 'options-page',
 			'value' => array( 'bpg-badges' )
 		)
 	) );
 
 	$group_field_id = $cmb_group->add_field( array(
-		'id'          => $prefix . 'badges',
-		'type'        => 'group',
-		'description' => __( 'Set the badges members get when they have donated over a given amount.', 'buddypress-give' ),
-		'options'     => array(
-			'group_title'   => __( 'Badge {#}', 'buddypress-give' ),
-			'add_button'    => __( 'Add another badge', 'buddypress-give' ),
+		'id' => $prefix . 'badges',
+		'type' => 'group',
+		'options' => array(
+			'group_title' => __( 'Badge {#}', 'buddypress-give' ),
+			'add_button' => __( 'Add another badge', 'buddypress-give' ),
 			'remove_button' => __( 'Remove this badge', 'buddypress-give' ),
-			'sortable'      => true
+			'sortable' => true
 		)
 	) );
 
 	$cmb_group->add_group_field( $group_field_id, array(
-		'name'       => __( 'Text', 'buddypress-give' ),
-		'id'         => $prefix . 'text',
-		'type'       => 'text'
+		'name' => __( 'Description', 'buddypress-give' ),
+		'id' => $prefix . 'text',
+		'type' => 'text'
 	) );
 
 	$cmb_group->add_group_field( $group_field_id, array(
-		'name'       => __( 'Amount', 'buddypress-give' ),
-		'id'         => $prefix . 'amount',
-		'type'       => 'text_money',
+		'name' => __( 'Amount', 'buddypress-give' ),
+		'id' => $prefix . 'amount',
+		'type' => 'text_money',
 		'before_field' => give_currency_symbol(),
 		'attributes' => array(
 			'placeholder' => give_format_amount( '0.00' )
@@ -126,16 +124,15 @@ function bpg_add_options_page_metabox() {
 	) );
 
 	$cmb_group->add_group_field( $group_field_id, array(
-		'name'         => __( 'Image', 'buddypress-give' ),
-		'id'           => $prefix . 'image',
-		'type'         => 'file',
+		'name' => __( 'Image', 'buddypress-give' ),
+		'id' => $prefix . 'image',
+		'type' => 'file',
 		'preview_size' => array( 60, 60 ),
 		'options' => array(
 			'url' => true,
 			'add_upload_file_text' => __( 'Upload or choose badge', 'buddypress-give' )
 		)
 	) );
-
 }
 add_action( 'cmb2_init', 'bpg_add_options_page_metabox' );
 
@@ -161,7 +158,7 @@ function bpg_register_admin_settings() {
 	// Add a settings section.
 	add_settings_section(
 		'bpgive',
-		__( 'Activity stream', 'buddypress-give' ),
+		'',
 		'bpg_settings_section_callback',
 		'give-buddypress'
 	);
@@ -169,7 +166,7 @@ function bpg_register_admin_settings() {
 	// Add a settings field.
 	add_settings_field(
 		'bpg-vis',
-		__( 'Label 1', 'buddypress-give' ),
+		__( 'Donation visibility', 'buddypress-give' ),
 		'bpg_settings_field_callback_vis',
 		'give-buddypress',
 		'bpgive',
@@ -181,7 +178,7 @@ function bpg_register_admin_settings() {
 	// Add a settings field.
 	add_settings_field(
 		'bpg-show-amount',
-		__( 'Label 2', 'buddypress-give' ),
+		__( 'Donation amount', 'buddypress-give' ),
 		'bpg_settings_field_callback_amount',
 		'give-buddypress',
 		'bpgive',
@@ -193,7 +190,7 @@ function bpg_register_admin_settings() {
 	// Add a settings field.
 	add_settings_field(
 		'bpg-default-message',
-		__( 'Label 3', 'buddypress-give' ),
+		__( 'Default donation message', 'buddypress-give' ),
 		'bpg_settings_field_callback_default_text',
 		'give-buddypress',
 		'bpgive'
@@ -202,7 +199,7 @@ function bpg_register_admin_settings() {
 	// Add a settings field.
 	add_settings_field(
 		'bpg-form-id',
-		__( 'Label 4', 'buddypress-give' ),
+		__( 'Donation form ID', 'buddypress-give' ),
 		'bpg_settings_field_callback_form_id',
 		'give-buddypress',
 		'bpgive'
@@ -227,9 +224,7 @@ add_action( 'admin_init', 'bpg_register_admin_settings', 99 );
  *
  * @since 1.0.0
  */
-function bpg_settings_section_callback() {
-	echo '<p>' . __( 'Section text to be added.', 'buddypress-give' ) . '</p>';
-}
+function bpg_settings_section_callback() {}
 
 /**
  * Add an input to the field.
@@ -242,7 +237,6 @@ function bpg_settings_field_callback_vis( $args ) {
 	?>
 	<input type="checkbox" name="bpg-options[bpg-vis]" id="bpg-vis" value="1" <?php checked( 1, isset( $options['bpg-vis'] ) ? $options['bpg-vis'] : '' ); ?> />
 	<label for="bpg-vis"><?php echo $args[0]; ?></label>
-	<p class="description">In a few words, explain what this option is about.</p>
 	<?php
 }
 
@@ -257,7 +251,6 @@ function bpg_settings_field_callback_amount( $args ) {
 	?>
 	<input type="checkbox" name="bpg-options[bpg-show-amount]" id="bpg-show-amount" value="1" <?php checked( 1, isset( $options['bpg-show-amount'] ) ? $options['bpg-show-amount'] : '' ); ?> />
 	<label for="bpg-show-amount"><?php echo $args[0]; ?></label>
-	<p class="description">In a few words, explain what this option is about.</p>
 	<?php
 }
 
@@ -274,7 +267,7 @@ function bpg_settings_field_callback_default_text( $args ) {
 
 	?>
 	<textarea name="bpg-options[bpg-default-message]" id="bpg-default-message" class="large-text" rows="3"><?php echo $options['bpg-default-message']; ?></textarea>
-	<p class="description">In a few words, explain what this option is about.</p>
+	<p class="description">This message will be used if the donor doesn't provide a custom message.</p>
 	<?php
 }
 
@@ -291,6 +284,6 @@ function bpg_settings_field_callback_form_id( $args ) {
 
 	?>
 	<input type="text" name="bpg-options[bpg-form-id]" id="bpg-form-id" value="<?php echo $options['bpg-form-id']; ?>" />
-	<p class="description">In a few words, explain what this option is about.</p>
+	<p class="description">This donation form will be displayed on profile pages.</p>
 	<?php
 }

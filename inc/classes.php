@@ -92,7 +92,7 @@ class Donation_Badge {
 	}
 
 	/**
-	 * Get a the total donated amount for a given user.
+	 * Get the total donated amount for a given user.
 	 *
 	 * @since 1.0.0
 	 * @access protected

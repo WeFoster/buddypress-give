@@ -265,7 +265,7 @@ function bpg_redirect() {
 add_action( 'wp', 'bpg_redirect' );
 
 /**
- * Filter the member's avatar to output a donation badge on each member's profile.
+ * Output a donation badge on each member's profile.
  *
  * @since 1.0.0
  *
@@ -277,6 +277,6 @@ function bpg_add_donation_badge( $avatar ) {
 
 	$badge = $obj->get();
 
-	return $avatar . ' ' . $badge;
+	return $avatar . $badge;
 }
 add_filter( 'bp_get_displayed_user_avatar', 'bpg_add_donation_badge' );
