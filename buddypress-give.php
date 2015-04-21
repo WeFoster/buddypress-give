@@ -142,9 +142,11 @@ add_action( 'plugins_loaded', 'bpg_req_plugins_exist' );
 function bpg_admin_notice() {
 
 	if ( ! bpg_req_plugins_exist() ) {
+
+		$notice = __( 'BuddyPress Give requires both Give and BuddyPress to be active.', 'buddypress-give' );
 		?>
 		<div class="error">
-			<p><?php _e( 'BuddyPress Give requires both Give and BuddyPress to be active.', 'buddypress-give' ); ?></p>
+			<p><?php echo esc_html( $notice ); ?></p>
 		</div>
 		<?php
 	}

@@ -19,16 +19,20 @@ function bpg_custom_form_fields( $form_id ) {
 
 	// Get user data.
 	$user = get_userdata( bp_loggedin_user_id() );
+
+	$label = __( 'Custom donation message', 'buddypress-give' );
+	$tip = __( 'Please enter a custom donation message', 'buddypress-give' );
+
 	?>
 	<div class="bp-give-message-wrap">
-		<label class="give-label" for="give-message"><?php _e( 'Custom donation message', 'buddypress-give' ); ?></label>
-		<span class="give-tooltip icon icon-question" data-tooltip="<?php _e( 'Please enter a custom donation message', 'buddypress-give' ) ?>"></span>
+		<label class="give-label" for="give-message"><?php echo esc_html( $label ); ?></label>
+		<span class="give-tooltip icon icon-question" data-tooltip="<?php echo esc_attr( $tip ); ?>"></span>
 
 		<textarea class="bp-give-textarea" name="give_message" id="give-message"></textarea>
 	</div>
 
 	<!-- Pass user email in a hidden field -->
-	<input type="hidden" name="give_email" value="<?php echo $user->user_email; ?>">
+	<input type="hidden" name="give_email" value="<?php echo sanitize_email( $user->user_email ); ?>">
 	<?php
 }
 add_action( 'give_after_donation_levels', 'bpg_custom_form_fields', 10, 1 );
@@ -78,11 +82,11 @@ function bpg_purchase_details( $payment_meta, $user_info ) {
 	if ( ! isset( $payment_meta['message'] ) ) {
 		return;
 	}
-
+	$label = __( 'Message', 'buddypress-give' );
 	?>
 	<div class="bp-give-message-data">
-		<label><?php echo __( 'Message', 'buddypress-give' ); ?></label>
-		<?php echo wpautop( $payment_meta['message'] ); ?>
+		<label><?php echo esc_html( $label ); ?></label>
+		<p><?php echo esc_html( $payment_meta['message'] ); ?></p>
 	</div>
 	<?php
 }
@@ -100,10 +104,12 @@ function bpg_purchase_summary( $payment ) {
 	$payment_meta = give_get_payment_meta( $payment->ID );
 
 	if ( $payment_meta['message'] ) {
+
+		$label = __( 'Message', 'buddypress-give' );
 		?>
 		<tr>
-			<td><strong><?php _e( 'Message', 'buddypress-give' ); ?>:</strong></td>
-			<td><?php echo $payment_meta['message']; ?></td>
+			<td><strong><?php echo esc_html( $label ); ?>:</strong></td>
+			<td><?php echo esc_html( $payment_meta['message'] ); ?></td>
 		</tr>
 		<?php
 	}
@@ -211,7 +217,8 @@ function bpg_give_screen_donations() {
  * @since 1.0.0
  */
 function bpg_page_title() {
-	echo __( 'Your Donations', 'buddypress-give' );
+	$title = __( 'Your Donations', 'buddypress-give' );
+	echo esc_html( $title );
 }
 
 /**
@@ -230,7 +237,8 @@ function bpg_page_content() {
 
 	if ( $option_data['bpg-form-id'] ) {
 
-		_e( 'Make a donation', 'buddypress-give' );
+		$text = __( 'Make a donation', 'buddypress-give' );
+		echo esc_html( $text );
 
 		echo do_shortcode( '[give_form id="' . $option_data['bpg-form-id'] . '"]' );
 	}

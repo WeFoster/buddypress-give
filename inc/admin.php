@@ -46,12 +46,14 @@ add_action( 'admin_menu', 'bpg_add_submenu' );
  */
 function bpg_settings_page() {
 
+	$title = __( 'BuddyPress', 'buddypress-give' );
+	$description = __( 'The settings on this page relate to BuddyPress.', 'buddypress-give' );
 	?>
 	<div class="wrap">
 
-		<h2><?php _e( 'BuddyPress', 'buddypress-give' ); ?></h2>
+		<h2><?php echo esc_html( $title ); ?></h2>
 		<?php settings_errors(); ?>
-		<p><?php _e( 'The settings on this page relate to BuddyPress.', 'buddypress-give' ); ?></p>
+		<p><?php echo esc_html( $description ); ?></p>
 
 		<form method="post" action="options.php">
 			<?php settings_fields( 'give-buddypress' ); ?>
@@ -69,10 +71,14 @@ function bpg_settings_page() {
  * @since 1.0.0
  */
 function bpg_badges_page() {
+
+	$title = __( 'Badges', 'buddypress-give' );
+	$description = __( 'Set the badges members receive when they have donated over a given amount.', 'buddypress-give' );
+
 	?>
 	<div class="wrap">
-		<h2><?php _e( 'Badges', 'buddypress-give' ); ?></h2>
-		<p><?php _e( 'Set the badges members receive when they have donated over a given amount.', 'buddypress-give' ); ?></p>
+		<h2><?php echo esc_html( $title ); ?></h2>
+		<p><?php echo esc_html( $description ); ?></p>
 
 		<?php cmb2_metabox_form( '_give_badges_metabox', 'bpg-badges' ); ?>
 	</div>
@@ -236,7 +242,7 @@ function bpg_settings_field_callback_vis( $args ) {
 	$options = get_blog_option( get_current_blog_id(), 'bpg-options' );
 	?>
 	<input type="checkbox" name="bpg-options[bpg-vis]" id="bpg-vis" value="1" <?php checked( 1, isset( $options['bpg-vis'] ) ? $options['bpg-vis'] : '' ); ?> />
-	<label for="bpg-vis"><?php echo $args[0]; ?></label>
+	<label for="bpg-vis"><?php echo esc_html( $args[0] ); ?></label>
 	<?php
 }
 
@@ -250,7 +256,7 @@ function bpg_settings_field_callback_amount( $args ) {
 	$options = get_blog_option( get_current_blog_id(), 'bpg-options' );
 	?>
 	<input type="checkbox" name="bpg-options[bpg-show-amount]" id="bpg-show-amount" value="1" <?php checked( 1, isset( $options['bpg-show-amount'] ) ? $options['bpg-show-amount'] : '' ); ?> />
-	<label for="bpg-show-amount"><?php echo $args[0]; ?></label>
+	<label for="bpg-show-amount"><?php echo esc_html( $args[0] ); ?></label>
 	<?php
 }
 
@@ -263,12 +269,14 @@ function bpg_settings_field_callback_default_text( $args ) {
 
 	$options = get_blog_option( get_current_blog_id(), 'bpg-options' );
 
+	$description = __( 'This message will be used if the donor does not provide a custom message.', 'buddypress-give' );
+
 	if ( ! isset( $options['bpg-default-message'] ) )
 		$options['bpg-default-message'] = '';
 
 	?>
-	<textarea name="bpg-options[bpg-default-message]" id="bpg-default-message" class="large-text" rows="3"><?php echo $options['bpg-default-message']; ?></textarea>
-	<p class="description">This message will be used if the donor doesn't provide a custom message.</p>
+	<textarea name="bpg-options[bpg-default-message]" id="bpg-default-message" class="large-text" rows="3"><?php echo esc_html( $options['bpg-default-message'] ); ?></textarea>
+	<p class="description"><?php echo esc_html( $description ); ?></p>
 	<?php
 }
 
@@ -281,11 +289,13 @@ function bpg_settings_field_callback_form_id( $args ) {
 
 	$options = get_blog_option( get_current_blog_id(), 'bpg-options' );
 
+	$description = __( 'This donation form will be displayed on profile pages.', 'buddypress-give' );
+
 	if ( ! isset( $options['bpg-form-id'] ) )
 		$options['bpg-form-id'] = '';
 
 	?>
-	<input type="text" name="bpg-options[bpg-form-id]" id="bpg-form-id" value="<?php echo $options['bpg-form-id']; ?>" />
-	<p class="description">This donation form will be displayed on profile pages.</p>
+	<input type="text" name="bpg-options[bpg-form-id]" id="bpg-form-id" value="<?php echo esc_attr( $options['bpg-form-id'] ); ?>" />
+	<p class="description"><?php echo esc_html( $description ); ?></p>
 	<?php
 }
