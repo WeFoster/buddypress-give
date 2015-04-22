@@ -153,7 +153,10 @@ function bpg_register_admin_settings() {
 		'bpg-vis' => '',
 		'bpg-show-amount' => '',
 		'bpg-default-message' => '',
-		'bpg-form-id' => ''
+		'bpg-form-id' => '',
+		'bpg-profile-badges' => '',
+		'bpg-avatar-badge' => '',
+		'bpg-avatar-badge-thumb' => ''
 	);
 
 	// Check the option exists.
@@ -164,8 +167,16 @@ function bpg_register_admin_settings() {
 	// Add a settings section.
 	add_settings_section(
 		'bpgive',
-		'',
+		__( 'General', 'buddypress-give' ),
 		'bpg_settings_section_callback',
+		'give-buddypress'
+	);
+
+	// Add a settings section.
+	add_settings_section(
+		'bpgivebadges',
+		__( 'Badges', 'buddypress-give' ),
+		'bpg_settings_section_callback_badges',
 		'give-buddypress'
 	);
 
@@ -211,6 +222,45 @@ function bpg_register_admin_settings() {
 		'bpgive'
 	);
 
+	// Add a settings field.
+	add_settings_field(
+		'bpg-profile-badges',
+		__( 'Show all in profile header?', 'buddypress-give' ),
+		'bpg_settings_field_callback_profile_badges',
+		'give-buddypress',
+		'bpgivebadges',
+		array(								
+			__( 'Yes', 'buddypress-give' ),
+			__( 'No', 'buddypress-give' )
+		)
+	);
+
+	// Add a settings field.
+	add_settings_field(
+		'bpg-avatar-badge',
+		__( 'Show highest in profile?', 'buddypress-give' ),
+		'bpg_settings_field_callback_avatar_badge',
+		'give-buddypress',
+		'bpgivebadges',
+		array(								
+			__( 'Yes', 'buddypress-give' ),
+			__( 'No', 'buddypress-give' )
+		)
+	);
+
+	// Add a settings field.
+	add_settings_field(
+		'bpg-avatar-badge-thumb',
+		__( 'Show highest in loops?', 'buddypress-give' ),
+		'bpg_settings_field_callback_avatar_badge_thumb',
+		'give-buddypress',
+		'bpgivebadges',
+		array(								
+			__( 'Yes', 'buddypress-give' ),
+			__( 'No', 'buddypress-give' )
+		)
+	);
+
 	// Register a setting.
 	register_setting(
 		'give-buddypress',
@@ -230,7 +280,26 @@ add_action( 'admin_init', 'bpg_register_admin_settings', 99 );
  *
  * @since 1.0.0
  */
-function bpg_settings_section_callback() {}
+function bpg_settings_section_callback() {
+
+	$output = __( 'This section is for general settings.', 'buddypress-give' );
+	?>
+	<p><?php echo esc_html( $output ); ?></p>
+	<?php
+}
+
+/**
+ * Fill the section with content.
+ *
+ * @since 1.0.0
+ */
+function bpg_settings_section_callback_badges() {
+
+	$output = __( 'This section relates to the display of the donation badges members have earned.', 'buddypress-give' );
+	?>
+	<p><?php echo esc_html( $output ); ?></p>
+	<?php
+}
 
 /**
  * Add an input to the field.
@@ -297,5 +366,56 @@ function bpg_settings_field_callback_form_id( $args ) {
 	?>
 	<input type="text" name="bpg-options[bpg-form-id]" id="bpg-form-id" value="<?php echo esc_attr( $options['bpg-form-id'] ); ?>" />
 	<p class="description"><?php echo esc_html( $description ); ?></p>
+	<?php
+}
+
+/**
+ * Add an input to the field.
+ *
+ * @since 1.0.0
+ */
+function bpg_settings_field_callback_profile_badges( $args ) {
+
+	$options = get_blog_option( get_current_blog_id(), 'bpg-options' );
+	?>
+	<input type="radio" name="bpg-options[bpg-profile-badges]" id="bpg-profile-badges-yes" value="1" <?php checked( 1, isset( $options['bpg-profile-badges'] ) ? $options['bpg-profile-badges'] : '' ); ?> />
+	<label for="bpg-profile-badges-yes"><?php echo esc_html( $args[0] ); ?></label>
+
+	<input type="radio" name="bpg-options[bpg-profile-badges]" id="bpg-profile-badges-no" value="0" <?php checked( 0, isset( $options['bpg-profile-badges'] ) ? $options['bpg-profile-badges'] : '' ); ?> />
+	<label for="bpg-profile-badges-no"><?php echo esc_html( $args[1] ); ?></label>
+	<?php
+}
+
+/**
+ * Add an input to the field.
+ *
+ * @since 1.0.0
+ */
+function bpg_settings_field_callback_avatar_badge( $args ) {
+
+	$options = get_blog_option( get_current_blog_id(), 'bpg-options' );
+	?>
+	<input type="radio" name="bpg-options[bpg-avatar-badge]" id="bpg-avatar-badge-yes" value="1" <?php checked( 1, isset( $options['bpg-avatar-badge'] ) ? $options['bpg-avatar-badge'] : '' ); ?> />
+	<label for="bpg-avatar-badge-yes"><?php echo esc_html( $args[0] ); ?></label>
+
+	<input type="radio" name="bpg-options[bpg-avatar-badge]" id="bpg-avatar-badge-no" value="0" <?php checked( 0, isset( $options['bpg-avatar-badge'] ) ? $options['bpg-avatar-badge'] : '' ); ?> />
+	<label for="bpg-avatar-badge-no"><?php echo esc_html( $args[1] ); ?></label>
+	<?php
+}
+
+/**
+ * Add an input to the field.
+ *
+ * @since 1.0.0
+ */
+function bpg_settings_field_callback_avatar_badge_thumb( $args ) {
+
+	$options = get_blog_option( get_current_blog_id(), 'bpg-options' );
+	?>
+	<input type="radio" name="bpg-options[bpg-avatar-badge-thumb]" id="bpg-avatar-badge-thumb-yes" value="1" <?php checked( 1, isset( $options['bpg-avatar-badge-thumb'] ) ? $options['bpg-avatar-badge-thumb'] : '' ); ?> />
+	<label for="bpg-avatar-badge-thumb-yes"><?php echo esc_html( $args[0] ); ?></label>
+
+	<input type="radio" name="bpg-options[bpg-avatar-badge-thumb]" id="bpg-avatar-badge-thumb-no" value="0" <?php checked( 0, isset( $options['bpg-avatar-badge-thumb'] ) ? $options['bpg-avatar-badge-thumb'] : '' ); ?> />
+	<label for="bpg-avatar-badge-thumb-no"><?php echo esc_html( $args[1] ); ?></label>
 	<?php
 }

@@ -268,18 +268,67 @@ function bpg_redirect() {
 add_action( 'wp', 'bpg_redirect' );
 
 /**
- * Output a donation badge on each member's profile.
+ * Output a donation badge next to each member's full avatar.
  *
  * @since 1.0.0
  *
- * @param string $avatar The member's avatar and badge HTML.
+ * @param string $avatar The member's avatar HTML.
+ * @return string
  */
 function bpg_add_donation_badge( $avatar ) {
 
+	$option_data = get_blog_option( get_current_blog_id(), 'bpg-options' );
+
+	if ( empty( $option_data['bpg-avatar-badge'] ) )
+		return $avatar;
+
+	if ( $option_data['bpg-avatar-badge-thumb'] )
+		return $avatar;
+
 	$obj = new Donation_Badge( bp_displayed_user_id() );
 
-	$badge = $obj->get();
+	$badge = $obj->get_highest();
 
 	return $avatar . $badge;
 }
 add_filter( 'bp_get_displayed_user_avatar', 'bpg_add_donation_badge' );
+
+/**
+ * Output a donation badge next to each member's thumb avatar.
+ *
+ * @since 1.0.0
+ */
+function bpg_add_donation_badge_avatar_thumb( $avatar, $params, $item_id, $avatar_dir, $html_css_id, $html_width, $html_height, $avatar_folder_url, $avatar_folder_dir ) {
+
+	$option_data = get_blog_option( get_current_blog_id(), 'bpg-options' );
+
+	if ( empty( $option_data['bpg-avatar-badge-thumb'] ) )
+		return $avatar;
+
+	$obj = new Donation_Badge( $item_id );
+
+	$badge = $obj->get_highest();
+
+	return $avatar . $badge;
+}
+add_filter( 'bp_core_fetch_avatar', 'bpg_add_donation_badge_avatar_thumb', 10, 9 );
+
+/**
+ * Output all earned donation badges in the member's profile header area.
+ *
+ * @since 1.0.0
+ */
+function bpg_add_donation_badges() {
+
+	$option_data = get_blog_option( get_current_blog_id(), 'bpg-options' );
+
+	if ( empty( $option_data['bpg-profile-badges'] ) )
+		return;
+
+	$obj = new Donation_Badge( bp_displayed_user_id() );
+
+	$badges = $obj->get_all();
+
+	echo $badges;
+}
+add_action( 'bp_before_member_header_meta', 'bpg_add_donation_badges' );

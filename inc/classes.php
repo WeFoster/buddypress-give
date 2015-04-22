@@ -57,7 +57,7 @@ class Donation_Badge {
 	 *
 	 * @return string The HTML output of the donation badge.
 	 */
-	function get() {
+	function get_highest() {
 
 		$badge = '';
 
@@ -92,6 +92,40 @@ class Donation_Badge {
 
 		}
 		return $badge;
+	}
+
+	/**
+	 * Get all badge for a given user.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 *
+	 * @return string The HTML output of the donation badge.
+	 */
+	function get_all() {
+
+		$output = '';
+
+		$badges = get_option( 'bpg-badges' );
+
+		if ( empty( $badges ) ) {
+			return $badge;
+		}
+
+		// Count the number of badges available.
+		$count = count( $badges['_give_badges'] );
+
+		// Get the total donated so far.
+		$this->purchase_value();
+
+		for ( $i = 0; $i < $count; $i++ ) {
+
+			if ( $this->purchase_value >= floatval( $badges['_give_badges'][$i]['_give_amount'] ) ) {
+				$output .= '<img src="' . $badges['_give_badges'][$i]['_give_image'] . '" alt="' . $badges['_give_badges'][$i]['_give_text'] . '" />';
+			}
+
+		}
+		return $output;
 	}
 
 	/**
