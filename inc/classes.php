@@ -79,13 +79,13 @@ class Donation_Badge {
 			if ( $i == ( $count - 1 ) ) {
 
 				if ( ( $this->purchase_value > floatval( $badges['_give_badges'][$i]['_give_amount'] ) ) ) {
-					$badge = '<img src="' . $badges['_give_badges'][$i]['_give_image'] . '" alt="' . $badges['_give_badges'][$i]['_give_text'] . '" />';
+					$badge = '<span class="bp-give-badge"><img src="' . $badges['_give_badges'][$i]['_give_image'] . '" alt="' . $badges['_give_badges'][$i]['_give_text'] . '" /></span>';
 					break;
 				}
 			} else {
 
 				if ( ( $this->purchase_value > floatval( $badges['_give_badges'][$i]['_give_amount'] ) ) && ( $this->purchase_value < floatval( $badges['_give_badges'][$i + 1]['_give_amount'] ) ) ) {
-					$badge = '<img src="' . $badges['_give_badges'][$i]['_give_image'] . '" alt="' . $badges['_give_badges'][$i]['_give_text'] . '" />';
+					$badge = '<span class="bp-give-badge"><img src="' . $badges['_give_badges'][$i]['_give_image'] . '" alt="' . $badges['_give_badges'][$i]['_give_text'] . '" /></span>';
 					break;
 				}
 			}
@@ -123,7 +123,7 @@ class Donation_Badge {
 			if ( $this->purchase_value >= floatval( $badges['_give_badges'][$i]['_give_amount'] ) ) {
 
 				// Append badge to the HTML output.
-				$output .= '<img src="' . $badges['_give_badges'][$i]['_give_image'] . '" alt="' . $badges['_give_badges'][$i]['_give_text'] . '" />';
+				$output .= '<span class="bp-give-badge"><img src="' . $badges['_give_badges'][$i]['_give_image'] . '" alt="' . $badges['_give_badges'][$i]['_give_text'] . '" /></span>';
 			}
 
 		}
