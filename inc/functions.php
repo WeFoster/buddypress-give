@@ -277,17 +277,19 @@ add_action( 'wp', 'bpg_redirect' );
  */
 function bpg_add_donation_badge( $avatar ) {
 
+	// Get option data.
 	$option_data = get_blog_option( get_current_blog_id(), 'bpg-options' );
 
 	if ( empty( $option_data['bpg-avatar-badge'] ) )
 		return $avatar;
 
+	// Bail if thumb avatar badges are in operation.
 	if ( $option_data['bpg-avatar-badge-thumb'] )
 		return $avatar;
 
 	$obj = new Donation_Badge( bp_displayed_user_id() );
 
-	$badge = $obj->get_highest();
+	$badge = $obj->get_highest_badge();
 
 	return $avatar . $badge;
 }
@@ -297,21 +299,26 @@ add_filter( 'bp_get_displayed_user_avatar', 'bpg_add_donation_badge' );
  * Output a donation badge next to each member's thumb avatar.
  *
  * @since 1.0.0
+ *
+ * @param string $avatar The member's avatar HTML.
+ * @param array $params See {@see bp_core_fetch_avatar()}.
+ * @return string
  */
-function bpg_add_donation_badge_avatar_thumb( $avatar, $params, $item_id, $avatar_dir, $html_css_id, $html_width, $html_height, $avatar_folder_url, $avatar_folder_dir ) {
+function bpg_add_donation_badge_avatar_thumb( $avatar, $params ) {
 
+	// Get option data.
 	$option_data = get_blog_option( get_current_blog_id(), 'bpg-options' );
 
 	if ( empty( $option_data['bpg-avatar-badge-thumb'] ) )
 		return $avatar;
 
-	$obj = new Donation_Badge( $item_id );
+	$obj = new Donation_Badge( $params['item_id'] );
 
-	$badge = $obj->get_highest();
+	$badge = $obj->get_highest_badge();
 
 	return $avatar . $badge;
 }
-add_filter( 'bp_core_fetch_avatar', 'bpg_add_donation_badge_avatar_thumb', 10, 9 );
+add_filter( 'bp_core_fetch_avatar', 'bpg_add_donation_badge_avatar_thumb', 10, 2 );
 
 /**
  * Output all earned donation badges in the member's profile header area.
@@ -320,6 +327,7 @@ add_filter( 'bp_core_fetch_avatar', 'bpg_add_donation_badge_avatar_thumb', 10, 9
  */
 function bpg_add_donation_badges() {
 
+	// Get option data.
 	$option_data = get_blog_option( get_current_blog_id(), 'bpg-options' );
 
 	if ( empty( $option_data['bpg-profile-badges'] ) )
@@ -327,7 +335,7 @@ function bpg_add_donation_badges() {
 
 	$obj = new Donation_Badge( bp_displayed_user_id() );
 
-	$badges = $obj->get_all();
+	$badges = $obj->get_all_badges();
 
 	echo $badges;
 }

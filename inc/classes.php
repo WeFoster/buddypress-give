@@ -50,14 +50,14 @@ class Donation_Badge {
 	}
 
 	/**
-	 * Get a badge for a given user.
+	 * Get the highest badge earned by a given user.
 	 *
 	 * @since 1.0.0
 	 * @access public
 	 *
 	 * @return string The HTML output of the donation badge.
 	 */
-	function get_highest() {
+	function get_highest_badge() {
 
 		$badge = '';
 
@@ -95,21 +95,21 @@ class Donation_Badge {
 	}
 
 	/**
-	 * Get all badge for a given user.
+	 * Get all badges for a given user.
 	 *
 	 * @since 1.0.0
 	 * @access public
 	 *
-	 * @return string The HTML output of the donation badge.
+	 * @return string The HTML output of the donation badges.
 	 */
-	function get_all() {
+	function get_all_badges() {
 
 		$output = '';
 
 		$badges = get_option( 'bpg-badges' );
 
 		if ( empty( $badges ) ) {
-			return $badge;
+			return $output;
 		}
 
 		// Count the number of badges available.
@@ -121,6 +121,8 @@ class Donation_Badge {
 		for ( $i = 0; $i < $count; $i++ ) {
 
 			if ( $this->purchase_value >= floatval( $badges['_give_badges'][$i]['_give_amount'] ) ) {
+
+				// Append badge to the HTML output.
 				$output .= '<img src="' . $badges['_give_badges'][$i]['_give_image'] . '" alt="' . $badges['_give_badges'][$i]['_give_text'] . '" />';
 			}
 
