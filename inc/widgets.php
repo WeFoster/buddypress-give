@@ -139,22 +139,20 @@ class Donation_Leaderboard_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 
-		$instance = $old_instance;
-
 		if ( ! isset( $new_instance['title'] ) )
-			$new_instance['title'] = '';
+			$instance['title'] = '';
 		else
-			$new_instance['title'] = sanitize_title( $new_instance['title'] );
+			$instance['title'] = sanitize_title( $new_instance['title'] );
 
 		if ( ! isset( $new_instance['number'] ) )
-			$new_instance['number'] = 5;
+			$instance['number'] = 5;
 		else
-			$new_instance['number'] = absint( $new_instance['number'] );
+			$instance['number'] = absint( $new_instance['number'] );
 
 		if ( ! isset( $new_instance['show_total'] ) )
-			$new_instance['show_total'] = false;
+			$instance['show_total'] = false;
 		else
-			$new_instance['show_total'] = (bool) $new_instance['show_total'];
+			$instance['show_total'] = (bool) $new_instance['show_total'];
 
 		return $instance;
 	}
