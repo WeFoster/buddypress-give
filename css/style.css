@@ -1,0 +1,49 @@
+.activity-avatar a {
+  position: relative;
+}
+span.bp-give-badge {
+  display: block;
+  height: 25px;
+  left: 25px;
+  position: absolute;
+  top: 25px;
+  width: 25px;
+}
+span.bp-give-badge img {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+}
+.bp-give-all-badges {
+  background: none repeat scroll 0 0 #f8f8f8;
+  border: 1px solid #f1f1f1;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  overflow: hidden;
+  padding: 10px;
+  width: auto;
+}
+.bp-give-all-badges span.bp-give-badge {
+  position: inherit;
+  width: 50px;
+  height: 50px;
+  float: left;
+  margin-right: 5px;
+}
+.bp-give-all-badges .bp-give-badge img {
+  width: 50px;
+  height: 50px;
+}
+.bp-give-badges-header {
+  font-weight: bold;
+  padding-bottom: 8px;
+  text-align: center;
+}
+#item-header-avatar span.bp-give-badge {
+  height: 40px;
+  width: 40px;
+}
+#item-header-avatar span.bp-give-badge img {
+  width: 40px;
+  height: 40px;
+}

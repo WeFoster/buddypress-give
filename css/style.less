@@ -1,15 +1,70 @@
-.bp-give-badge img {
+@badge-size: 25px;
+@badge-size-medium: 40px;
+@badge-size-large: 50px;
+
+.activity-avatar a {
+	position: relative;
+}
+
+span.bp-give-badge {
+
+	display: block;
+	height: @badge-size;
+	left: @badge-size;
 	position: absolute;
-	width: 80px;
-	height: 80px;
+	top: @badge-size;
+	width: @badge-size;
+
+	img {
+		position: absolute;
+		width: @badge-size;
+		height: @badge-size;
+	}
 }
 
 .bp-give-all-badges {
-	overflow: hidden;
-	background: #222;
+
+   	background: none repeat scroll 0 0 #f8f8f8;
+    border: 1px solid #f1f1f1;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    overflow: hidden;
+    padding: 10px;
+    width: auto;
+
+	span.bp-give-badge {
+		position: inherit;
+		width: @badge-size-large;
+		height: @badge-size-large;
+		float: left;
+		margin-right: 5px;
+	}
 
 	.bp-give-badge img {
-		float: left;
+		width: @badge-size-large;
+		height: @badge-size-large;
+	}
+
+}
+
+.bp-give-badges-header {
+    font-weight: bold;
+    padding-bottom: 8px;
+    text-align: center;
+}
+
+#item-header-avatar {
+
+	span.bp-give-badge {
+		
+	height: @badge-size-medium;
+	width: @badge-size-medium;
+
+		img {
+			width: @badge-size-medium;
+			height: @badge-size-medium;
+		}
+
 	}
 
 }
